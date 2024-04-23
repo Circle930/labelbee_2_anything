@@ -2,7 +2,7 @@
 为了自定义数据集，实现 ***labelbee*** 的 ***json文件*** 转换伪色彩标注图。
 
 ## 地址
-[⚡️ Labelme2seg 代码](https://github.com/PaddlePaddle/PaddleSeg/blob/release/2.9/tools/data/labelme2seg.py)
+[⚡️ *Labelme2seg 代码*](https://github.com/PaddlePaddle/PaddleSeg/blob/release/2.9/tools/data/labelme2seg.py)
 
 ## 步骤
 - 在`shape2mask`函数中，原来的代码使用`shape['points']`来获取标注形状的点列表。
