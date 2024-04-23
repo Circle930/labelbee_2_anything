@@ -1,4 +1,4 @@
-## 基于*Paddleseg*源代码下的*labelme2seg.py*修改
+## 基于 Paddleseg 源代码下的 labelme2seg.py 修改
 为了自定义数据集，实现 ***labelbee*** 的 ***json文件*** 转换伪色彩标注图。
 
 ## 地址
