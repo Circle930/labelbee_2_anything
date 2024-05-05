@@ -1,11 +1,12 @@
 import json
+import os
 
-def labelbee_keypoints_to_labelme(labelbee_data):
+def labelbee_keypoints_to_labelme(labelbee_data, image_file):
     labelme_data = {
         "version": "4.5.7",
         "flags": {},
         "shapes": [],
-        "imagePath": "image.jpg",  # 替换为实际的图像路径
+        "imagePath": os.path.basename(image_file),  
         "imageData": None,
         "imageHeight": labelbee_data["height"],
         "imageWidth": labelbee_data["width"]
@@ -13,7 +14,7 @@ def labelbee_keypoints_to_labelme(labelbee_data):
     
     for keypoint in labelbee_data["step_1"]["result"]:
         shape_info = {
-            "label": "",  # 根据需要添加标签
+            "label": "",  
             "points": [[keypoint["x"], keypoint["y"]]],
             "group_id": None,
             "shape_type": "point",
@@ -23,21 +24,27 @@ def labelbee_keypoints_to_labelme(labelbee_data):
     
     return labelme_data
 
-# 从本地文件加载 LabelBee JSON 数据
-file_path = "/Users/circle/Desktop/Project/Dataset/footdot_data/result/0_0.jpg.json"  # 替换为实际的文件路径
-with open(file_path, "r") as f:
-    labelbee_json = f.read()
+def batch_labelbee_to_labelme(input_dir, output_dir):
+    if not os.path.exists(output_dir):
+        os.makedirs(output_dir)
+    
+    for filename in os.listdir(input_dir):
+        if filename.endswith(".json"):
+            input_file = os.path.join(input_dir, filename)
+            output_file = os.path.splitext(os.path.basename(filename))[0]  # 删除扩展名
+            with open(input_file, "r") as f:
+                labelbee_data = json.load(f)
+            labelme_data = labelbee_keypoints_to_labelme(labelbee_data, input_file)
+            output_file = filename.replace(".jpg", "")
+            output_file = os.path.join(output_dir, output_file)  # 添加后缀
+            
+            with open(output_file, "w") as f:
+                json.dump(labelme_data, f, indent=4)
+            print(f"转换完成。LabelMe 格式数据已保存到 '{output_file}'。")
 
-labelbee_data = json.loads(labelbee_json)
+# 指定输入目录和输出目录
+input_dir = "/Users/circle/Desktop/Project/Dataset/footdot_data/test/"  # 替换为实际的输入目录
+output_dir = "/Users/circle/Desktop/Project/Dataset/footdot_data/labelme/"  # 替换为实际的输出目录
 
-# 将 LabelBee 数据转换为 LabelMe 格式
-labelme_data = labelbee_keypoints_to_labelme(labelbee_data)
-
-# 指定输出文件路径
-output_file = "output_labelme.json"
-
-# 将 LabelMe 格式数据保存到指定文件
-with open(output_file, "w") as f:
-    json.dump(labelme_data, f, indent=4)
-
-print(f"转换完成。LabelMe 格式数据已保存到 '{output_file}'。")
+# 批量转换
+batch_labelbee_to_labelme(input_dir, output_dir)
