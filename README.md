@@ -1,5 +1,7 @@
-## 基于 Paddleseg 源代码下的 labelme2seg.py 修改
-为了自定义数据集，实现 ***labelbee*** 的 ***json文件*** 转换伪色彩标注图。
+## Labelbee_2_anything
+- 此项目下的脚本是为了labelbee格式的json文件转换为paddlepaddle支持的格式方便自定义训练集
+  1. labelbee2seg.py为了自定义数据集，实现 ***labelbee*** 的 ***json文件*** 转换伪色彩标注图。
+  2. labelbee2labelme.py实现labelbee的json格式转换为labeme的json格式
 
 ## 地址
 [⚡️ *Labelme2seg 代码*](https://github.com/PaddlePaddle/PaddleSeg/blob/release/2.9/tools/data/labelme2seg.py)
