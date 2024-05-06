@@ -3,7 +3,7 @@ import os
 
 def labelbee_keypoints_to_labelme(labelbee_data, image_file):
     labelme_data = {
-        "version": "4.5.7",
+        "version": "5.1.1",
         "flags": {},
         "shapes": [],
         "imagePath": os.path.basename(image_file),  
@@ -14,11 +14,13 @@ def labelbee_keypoints_to_labelme(labelbee_data, image_file):
     
     for keypoint in labelbee_data["step_1"]["result"]:
         shape_info = {
-            "label": "",  
+            "label": keypoint["order"],  
             "points": [[keypoint["x"], keypoint["y"]]],
             "group_id": None,
+            "description": "",
             "shape_type": "point",
-            "flags": {}
+            "flags": {},
+            "mask": None
         }
         labelme_data["shapes"].append(shape_info)
     
@@ -43,7 +45,7 @@ def batch_labelbee_to_labelme(input_dir, output_dir):
             print(f"转换完成。LabelMe 格式数据已保存到 '{output_file}'。")
 
 # 指定输入目录和输出目录
-input_dir = "/Users/circle/Desktop/Project/Dataset/footdot_data/test/"  # 替换为实际的输入目录
+input_dir = "/Users/circle/Desktop/Project/Dataset/footdot_data/labelbee/"  # 替换为实际的输入目录
 output_dir = "/Users/circle/Desktop/Project/Dataset/footdot_data/labelme/"  # 替换为实际的输出目录
 
 # 批量转换

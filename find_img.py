@@ -26,7 +26,7 @@ def custom_common_rule(image_file, json_file):
     return image_file.split(".")[0] in json_file.split(".")[0]
 
 # 指定图像文件夹和JSON文件夹的路径
-image_folder = "/Users/circle/Desktop/Project/Dataset/footdot_data/img_test"  # 替换为图像文件夹的路径
+image_folder = "/Users/circle/Desktop/Project/Dataset/footdot_data/img_tans"  # 替换为图像文件夹的路径
 json_folder = "/Users/circle/Desktop/Project/Dataset/footdot_data/labelme"    # 替换为JSON文件夹的路径
 
 # 运行函数以查找和删除重复文件
