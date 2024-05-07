@@ -1,6 +1,7 @@
 import os
 import shutil
 
+# 查找并复制共同文件
 def find_and_copy_duplicates(image_folder, json_folder, common_rule, output_folder):
     # 获取图像文件名集合
     image_files = set(os.listdir(image_folder))
