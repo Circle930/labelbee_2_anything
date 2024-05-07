@@ -25,16 +25,23 @@ def find_and_copy_duplicates(image_folder, json_folder, common_rule, output_fold
     # 复制共同文件到输出文件夹
     for common_file in common_files:
         if common_file != '.DS_Store':  # 跳过.DS_Store文件
-            if common_file in image_files and common_file not in os.listdir(output_folder):
-                shutil.copy(os.path.join(image_folder, common_file), output_folder)
-            if common_file in json_files and common_file not in os.listdir(output_folder):
-                shutil.copy(os.path.join(json_folder, common_file), output_folder)
+            destination_path = os.path.join(output_folder, common_file)
+            if not os.path.exists(destination_path):  # 检查目标文件是否存在
+                if common_file in image_files:
+                    shutil.copy(os.path.join(image_folder, common_file), output_folder)
+                if common_file in json_files:
+                    shutil.copy(os.path.join(json_folder, common_file), output_folder)
+
 
 # 自定义共同文件名规则
 def custom_common_rule(image_file, json_file):
-    image_num = image_file.split(".")[0].split("_")[0]  # 提取图像文件的数字部分
-    json_num = json_file.split(".")[0].split("_")[0]    # 提取JSON文件的数字部分
-    return image_num == json_num
+    # 提取文件名中 ".json" 前面的子字符串
+    image_prefix = image_file
+    json_prefix = json_file.split(".json")[0]
+    # 比较子字符串是否相同
+    return image_prefix == json_prefix
+
+
 
 # 指定图像文件夹和JSON文件夹的路径
 image_folder = "/Users/circle/Desktop/Project/Dataset/footdot_data/image_c"  # 替换为图像文件夹的路径
