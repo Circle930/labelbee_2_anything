@@ -4,6 +4,10 @@ import shutil
 from PIL import Image
 
 
+
+
+
+
 def convert_to_coco(labelbee_json_path, image_id, image_width, image_height, start_id=0):
     with open(labelbee_json_path, 'r') as f:
         labelbee_data = json.load(f)
@@ -41,15 +45,13 @@ def convert_to_coco(labelbee_json_path, image_id, image_width, image_height, sta
             "id": image_id
         }]
     }
-    # 递增标注 ID 计数器
-    id_counter += 1
-    # 递增图像 ID
-    image_id += 1
 
 
 
 
-def convert_labelbee_to_paddle(labelbee_dir, output_dir):
+
+
+def convert_labelbee_to_paddle(labelbee_dir, output_dir, val_ratio=0.2):
     # 创建必要的文件夹
     train_dir = os.path.join(output_dir, 'train')
     val_dir = os.path.join(output_dir, 'val')
@@ -74,11 +76,12 @@ def convert_labelbee_to_paddle(labelbee_dir, output_dir):
                         "skeleton": []}]
     }
 
-    image_id_counter = 0
+    image_id_counter_train = 0  # 用于训练集图片ID计数
+    image_id_counter_val = 0    # 用于验证集图片ID计数
     annotation_id_counter = 0
 
     # 遍历 LabelBee JSON 文件
-    for filename in os.listdir(labelbee_dir):
+    for idx, filename in enumerate(os.listdir(labelbee_dir)):
         if filename.endswith(".json"):
             labelbee_json_path = os.path.join(labelbee_dir, filename)
             # 假设图片文件名与 JSON 文件名相同，只是扩展名不同
@@ -90,19 +93,20 @@ def convert_labelbee_to_paddle(labelbee_dir, output_dir):
                 image_width, image_height = img.size
 
             # 转换为 COCO 格式
-            coco_single = convert_to_coco(labelbee_json_path, image_id_counter, image_width, image_height)
+            coco_single = convert_to_coco(labelbee_json_path, image_id_counter_train if idx >= len(os.listdir(labelbee_dir)) * val_ratio else image_id_counter_val, image_width, image_height)
 
             # 根据数据集分割，将数据添加到对应的 COCO 数据结构中
-            if ...:  # 判断条件，根据分割结果决定是训练集还是验证集
-                coco_train["images"].append(coco_single["images"][0])
-                coco_train["annotations"].extend(coco_single["annotations"])
-                shutil.copy(image_path, train_dir)  # 复制图片到训练集文件夹
-            else:
+            if idx < len(os.listdir(labelbee_dir)) * val_ratio:  # 根据验证集比例决定是训练集还是验证集
                 coco_val["images"].append(coco_single["images"][0])
                 coco_val["annotations"].extend(coco_single["annotations"])
                 shutil.copy(image_path, val_dir)  # 复制图片到验证集文件夹
+                image_id_counter_val += 1  # 更新验证集图片ID计数器
+            else:
+                coco_train["images"].append(coco_single["images"][0])
+                coco_train["annotations"].extend(coco_single["annotations"])
+                shutil.copy(image_path, train_dir)  # 复制图片到训练集文件夹
+                image_id_counter_train += 1  # 更新训练集图片ID计数器
 
-            image_id_counter += 1
             annotation_id_counter += len(coco_single["annotations"])
 
     # 写入 COCO JSON 文件
@@ -111,6 +115,8 @@ def convert_labelbee_to_paddle(labelbee_dir, output_dir):
 
     with open(os.path.join(annotations_dir, 'instance_val.json'), 'w') as f:
         json.dump(coco_val, f, indent=4)
+
+
 
 
 
