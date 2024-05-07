@@ -1,7 +1,7 @@
 import json
 import os
 import shutil
-from PIL import Image # 用于读取图像宽高信息
+from PIL import Image
 
 
 def convert_to_coco(labelbee_json_path, image_id, image_width, image_height, start_id=0):
@@ -45,9 +45,6 @@ def convert_to_coco(labelbee_json_path, image_id, image_width, image_height, sta
     id_counter += 1
     # 递增图像 ID
     image_id += 1
-
-
-
 
 
 
@@ -120,5 +117,5 @@ def convert_labelbee_to_paddle(labelbee_dir, output_dir):
 
 # 示例用法
 labelbee_dir = "labelbee"  # 指定 LabelBee JSON 文件所在的目录
-output_dir = "paddle_format"  
+output_dir = "coco_format"  
 convert_labelbee_to_paddle(labelbee_dir, output_dir)
