@@ -1,39 +1,53 @@
 import json
 import os
 import shutil
-from PIL import Image  # 用于读取图片尺寸
+from PIL import Image
 
 
-
-
-def convert_to_coco(labelbee_json_path, image_id, image_width, image_height):
+def convert_to_coco(labelbee_json_path, image_id, image_width, image_height, start_id=0):
     with open(labelbee_json_path, 'r') as f:
         labelbee_data = json.load(f)
 
     coco_annotations = []
+    id_counter = start_id  # 初始化标注ID计数器
+    keypoints_list = []  # 存储所有关键点的信息
 
+    # 创建标注信息字典
+    annotation_info = {
+        "num_keypoints": 12,  # 假设每个点只有一个关键点
+        "area": image_width * image_height,  # 整个图像的面积
+        "iscrowd": 0,  # 假设每个点都不是群集
+        "image_id": image_id,  # 图像ID
+        "bbox": [0, 0, image_width, image_height],  # 整个图像作为边界框
+        "category_id": 1,  # 假设所有点都属于同一类别
+        "id": image_id,  # 每个标注的唯一ID
+    }
+
+    # 遍历所有关键点，将每个关键点的坐标和可见性标志添加到列表中
     for point_data in labelbee_data["step_1"]["result"]:
-        annotation_info = {
-            "num_keypoints": 1,  # 假设每个点只有一个关键点
-            "area": image_width * image_height,  # 整个图像的面积
-            "iscrowd": 0,  # 假设每个点都不是群集
-            "keypoints": [int(point_data["x"]), int(point_data["y"]), 2], 
-            "image_id": image_id,  # 图像ID
-            "bbox": [0, 0, image_width, image_height],  # 整个图像作为边界框
-            "category_id": 1,  # 假设所有点都属于同一类别
-            "id": len(coco_annotations) + 1,  # 每个标注的唯一ID
-        }
-        coco_annotations.append(annotation_info)
+        keypoints_list.extend([int(point_data["x"]), int(point_data["y"]), 2])
+
+    # 将关键点列表添加到标注信息字典中
+    annotation_info["keypoints"] = keypoints_list
+    # 将标注信息字典添加到注释列表中
+    coco_annotations.append(annotation_info)
 
     return {
         "annotations": coco_annotations,
         "images": [{
-            "file_name": os.path.splitext(os.path.basename(labelbee_json_path))[0] + ".jpg",
+            "file_name": os.path.splitext(os.path.basename(labelbee_json_path))[0],
             "height": image_height,
             "width": image_width,
             "id": image_id
         }]
     }
+    # 递增标注 ID 计数器
+    id_counter += 1
+    # 递增图像 ID
+    image_id += 1
+
+
+
 
 
 
@@ -51,12 +65,16 @@ def convert_labelbee_to_paddle(labelbee_dir, output_dir):
     coco_train = {
         "images": [],
         "annotations": [],
-        "categories": [{"id": 1, "name": "category_name", "supercategory": "supercategory_name"}]  # 填入实际类别信息
+        "categories": [{"supercategory": "foot", "id": 1, "name": "footT", \
+                        "keypoints": ["T","B","C"], \
+                        "skeleton": []}]
     }
     coco_val = {
         "images": [],
         "annotations": [],
-        "categories": [{"id": 1, "name": "category_name", "supercategory": "supercategory_name"}]  # 填入实际类别信息
+        "categories": [{"supercategory": "foot", "id": 1, "name": "footT", \
+                        "keypoints": ["T","B","C"], \
+                        "skeleton": []}]
     }
 
     image_id_counter = 0
