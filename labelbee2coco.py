@@ -1,7 +1,7 @@
 import json
 import os
 import shutil
-from PIL import Image
+from PIL import Image # 用于读取图像宽高信息
 
 
 def convert_to_coco(labelbee_json_path, image_id, image_width, image_height, start_id=0):
