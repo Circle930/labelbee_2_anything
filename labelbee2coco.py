@@ -122,6 +122,6 @@ def convert_labelbee_to_paddle(labelbee_dir, output_dir, val_ratio=0.2):
 
 
 # 示例用法
-labelbee_dir = "labelbee"  # 指定 LabelBee JSON 文件所在的目录
-output_dir = "foot_coco_format"  
+labelbee_dir = "/Users/circle/Desktop/Project/Dataset/footdot_data/labelbee"  # 指定 LabelBee JSON 文件所在的目录
+output_dir = "/Users/circle/Desktop/Project/Dataset/footdot_data/foot_coco_format" 
 convert_labelbee_to_paddle(labelbee_dir, output_dir)
