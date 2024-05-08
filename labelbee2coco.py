@@ -4,10 +4,6 @@ import shutil
 from PIL import Image
 
 
-
-
-
-
 def convert_to_coco(labelbee_json_path, image_id, image_width, image_height, start_id=0):
     with open(labelbee_json_path, 'r') as f:
         labelbee_data = json.load(f)
@@ -48,9 +44,6 @@ def convert_to_coco(labelbee_json_path, image_id, image_width, image_height, sta
 
 
 
-
-
-
 def convert_labelbee_to_paddle(labelbee_dir, output_dir, val_ratio=0.2):
     # 创建必要的文件夹
     train_dir = os.path.join(output_dir, 'train')
@@ -65,14 +58,14 @@ def convert_labelbee_to_paddle(labelbee_dir, output_dir, val_ratio=0.2):
         "images": [],
         "annotations": [],
         "categories": [{"supercategory": "foot", "id": 1, "name": "footT", \
-                        "keypoints": ["T","B","C"], \
+                        "keypoints": ["1","2","3","4","5","6","7","8","9","10","11","12"], \
                         "skeleton": []}]
     }
     coco_val = {
         "images": [],
         "annotations": [],
         "categories": [{"supercategory": "foot", "id": 1, "name": "footT", \
-                        "keypoints": ["T","B","C"], \
+                        "keypoints": ["1","2","3","4","5","6","7","8","9","10","11","12"], \
                         "skeleton": []}]
     }
 
@@ -115,9 +108,6 @@ def convert_labelbee_to_paddle(labelbee_dir, output_dir, val_ratio=0.2):
 
     with open(os.path.join(annotations_dir, 'instance_val.json'), 'w') as f:
         json.dump(coco_val, f, indent=4)
-
-
-
 
 
 
