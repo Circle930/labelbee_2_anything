@@ -86,7 +86,9 @@ def convert_labelbee_to_paddle(labelbee_dir, output_dir, val_ratio=0.2):
                 image_width, image_height = img.size
 
             # 转换为 COCO 格式
-            coco_single = convert_to_coco(labelbee_json_path, image_id_counter_train if idx >= len(os.listdir(labelbee_dir)) * val_ratio else image_id_counter_val, image_width, image_height)
+            coco_single = convert_to_coco(labelbee_json_path, image_id_counter_train 
+                                          if idx >= len(os.listdir(labelbee_dir)) * val_ratio 
+                                          else image_id_counter_val, image_width, image_height)
 
             # 根据数据集分割，将数据添加到对应的 COCO 数据结构中
             if idx < len(os.listdir(labelbee_dir)) * val_ratio:  # 根据验证集比例决定是训练集还是验证集
@@ -113,5 +115,5 @@ def convert_labelbee_to_paddle(labelbee_dir, output_dir, val_ratio=0.2):
 
 # 示例用法
 labelbee_dir = "/Users/circle/Desktop/Project/Dataset/footdot_data/labelbee"  # 指定 LabelBee JSON 文件所在的目录
-output_dir = "/Users/circle/Desktop/Project/Dataset/footdot_data/foot_coco_format" 
+output_dir = "/Users/circle/Desktop/Project/Dataset/footdot_data/foot_coco" 
 convert_labelbee_to_paddle(labelbee_dir, output_dir)
