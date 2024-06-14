@@ -44,7 +44,7 @@ def convert_to_coco(labelbee_json_path, image_id, image_width, image_height, sta
 
 
 
-def convert_labelbee_to_paddle(labelbee_dir, output_dir, val_ratio=0.2):
+def convert_labelbee_to_paddle(labelbee_dir, output_dir, val_ratio=0.05):
     # 创建必要的文件夹
     train_dir = os.path.join(output_dir, 'train')
     val_dir = os.path.join(output_dir, 'val')
@@ -105,10 +105,10 @@ def convert_labelbee_to_paddle(labelbee_dir, output_dir, val_ratio=0.2):
             annotation_id_counter += len(coco_single["annotations"])
 
     # 写入 COCO JSON 文件
-    with open(os.path.join(annotations_dir, 'instance_train.json'), 'w') as f:
+    with open(os.path.join(annotations_dir, 'instances_train.json'), 'w') as f:
         json.dump(coco_train, f, indent=4)
 
-    with open(os.path.join(annotations_dir, 'instance_val.json'), 'w') as f:
+    with open(os.path.join(annotations_dir, 'instances_val.json'), 'w') as f:
         json.dump(coco_val, f, indent=4)
 
 
