@@ -44,8 +44,8 @@ def custom_common_rule(image_file, json_file):
 
 
 # 指定图像文件夹和JSON文件夹的路径
-image_folder = "/Users/circle/Desktop/Project/Dataset/footdot_data/image_c"  # 替换为图像文件夹的路径
-json_folder = "/Users/circle/Desktop/Project/Dataset/footdot_data/result_c"   # 替换为JSON文件夹的路径
+image_folder = "/Users/circle/Desktop/Project/Dataset/footdot_data/image"  # 替换为图像文件夹的路径
+json_folder = "/Users/circle/Desktop/Project/Dataset/footdot_data/result"   # 替换为JSON文件夹的路径
 
 # 指定输出文件夹的路径
 output_folder = "/Users/circle/Desktop/Project/Dataset/footdot_data/labelbee"  # 替换为输出文件夹的路径

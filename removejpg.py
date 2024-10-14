@@ -21,6 +21,6 @@ def remove_jpg_from_filenames(input_dir, output_dir):
             print(f"Renamed {filename} to {os.path.basename(output_path)}")
 
 # 示例用法
-output_dir = "val_add"
-input_dir = "val"
+output_dir = "removejpg_output"
+input_dir = "/Users/circle/Desktop/Project/Dataset/footdot_data/labelbee"
 remove_jpg_from_filenames(input_dir, output_dir)
